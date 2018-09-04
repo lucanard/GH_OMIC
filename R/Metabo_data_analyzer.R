@@ -29,7 +29,7 @@ Metabo_data_analyzer <- function(datapath = NULL, pathresult = NULL, author = "L
                                  intvalpar="into", center=NULL, normalization=TRUE, NomRapport = NULL, grouping_mode = "area_corr",
                                  no_conditioning_QC = "ON", list_conQC= "NULL", RT_max = NULL) {
   if(is.null(datapath)) {
-  pathFILE = tcltk::tclvalue(tkchooseDirectory(initialdir = getwd(),
+  datapath = tcltk::tclvalue(tkchooseDirectory(initialdir = getwd(),
                                         title = "Please, select your RAW data directory"))
   } else {
     datapath = datapath
