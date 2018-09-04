@@ -3,5 +3,7 @@ The package aims to simply deconvolute orbitrap like data from the format mzML t
 
 ### to download
 just type
+```R
 library("devtools")
 install_github("lucanard/GH_OMIC")
+```
