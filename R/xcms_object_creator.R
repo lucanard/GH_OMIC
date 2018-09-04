@@ -20,23 +20,23 @@ xcms_object_creator <- function(datapath, use.IPO, retcorvar, intvalpar, center,
    cvth=0.45
  }
 cwp <- CentWaveParam(ppm=ppm, prefilter=prefilter, snthresh=snthresh, peakwidth=peakwidth, mzdiff=mzdiff, integrate=1, noise=noise)
-raw_data <- readMSData(cdffiles, mode = "onDisk", msLevel=1)
-xset <- findChromPeaks(raw_data, param = cwp, return.type="xcmsSet", BPPARAM = SnowParam(detectCores()-1))
+raw_data <- xcms::readMSData(cdffiles, mode = "onDisk", msLevel=1)
+xset <- xcms::findChromPeaks(raw_data, param = cwp, return.type="xcmsSet", BPPARAM = SnowParam(detectCores()-1))
 xset@polarity <- polarity
 
 if (retcorvar==TRUE){
-  xsg1<-group(xset, method="density", bw=30, mzwid=mzwid, minfrac=minfrac, minsamp=minsamp, max=30)
-  xsg1ret<-retcor(xsg1, plottype="deviation")
-  xsg1retg2<-group(xsg1ret, method="density", bw=15, mzwid=mzwid, minfrac=minfrac, minsamp=minsamp, max=30)
-  xsg1retg2ret<-retcor(xsg1retg2, plottype="deviation")
-  xset3<-group(xsg1retg2ret, method="density", bw=5, mzwid=mzwid, minfrac=minfrac, minsamp=minsamp, max=30)
+  xsg1<- xcms::group(xset, method="density", bw=30, mzwid=mzwid, minfrac=minfrac, minsamp=minsamp, max=30)
+  xsg1ret<- xcms::retcor(xsg1, plottype="deviation")
+  xsg1retg2<- xcms::group(xsg1ret, method="density", bw=15, mzwid=mzwid, minfrac=minfrac, minsamp=minsamp, max=30)
+  xsg1retg2ret<- xcms::retcor(xsg1retg2, plottype="deviation")
+  xset3<- xcms::group(xsg1retg2ret, method="density", bw=5, mzwid=mzwid, minfrac=minfrac, minsamp=minsamp, max=30)
   dev.copy2pdf(file=paste("RetCorrLoess_",NomRapport, format(Sys.time(), format = "%Y%m%d_%Hh%M"),".pdf", sep=""))
 }else{
   if (is.null(center)){
-    xset2 <- retcor(xset, method="obiwarp", plottype = c("deviation"), profStep=1)
+    xset2 <- xcms::retcor(xset, method="obiwarp", plottype = c("deviation"), profStep=1)
     object= xset2
-    peakmat <- peaks(object)
-    samples <- sampnames(object)
+    peakmat <- xcms::peaks(object)
+    samples <- xcms::sampnames(object)
     N <- length(samples)
     plength <- rep(0, N)
     for(i in 1:N){
@@ -47,10 +47,10 @@ if (retcorvar==TRUE){
     dev.off()
     rm(object)
     }else{
-    xset2 <- retcor(xset, method="obiwarp", plottype = c("deviation"), profStep=1, center=center)
+    xset2 <- xcms::retcor(xset, method="obiwarp", plottype = c("deviation"), profStep=1, center=center)
     object= xset2
-    peakmat <- peaks(object)
-    samples <- sampnames(object)
+    peakmat <- xcms::peaks(object)
+    samples <- xcms::sampnames(object)
     N <- length(samples)
     plength <- rep(0, N)
     for(i in 1:N){
@@ -61,10 +61,10 @@ if (retcorvar==TRUE){
     dev.off()
     rm(object)
     }
-  xset3 <- group(xset2, method="density", bw=bw, mzwid=mzwid, minfrac=minfrac, minsamp=minsamp, max=30)
+  xset3 <- xcms::group(xset2, method="density", bw=bw, mzwid=mzwid, minfrac=minfrac, minsamp=minsamp, max=30)
 }
 
-xset4 <- fillPeaks(xset3)
+xset4 <- xcms::fillPeaks(xset3)
 save.image(paste(NomRapport, format(Sys.time(), format = "%Y%m%d_%Hh%M"),".RData",sep=""))
 return(xset4)
 }
