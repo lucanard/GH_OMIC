@@ -16,7 +16,7 @@
 #' @import xcms
 #' @import CAMERA
 #' @import stringr
-#' @importFrom tcltk,tclvalue
+#' @importFrom tcltk tclvalue
 #' @usage Metabo_data_analyzer(datapath, pathresult = NULL, author = "LNA", use_IPO = FALSE, ret_corvar=FALSE, intvalpar="into", center=NULL, normalization=TRUE, NomRapport = NULL, grouping_mode, no_conditioning_QC = "ON", list_conQC= "NULL", RT_max)
 #' @author Luca Narduzzi "nardluca@gmail.com"
 #' @return peaky
