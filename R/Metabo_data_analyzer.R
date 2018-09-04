@@ -16,6 +16,7 @@
 #' @import xcms
 #' @import CAMERA
 #' @import stringr
+#' @importFrom tcltk,tclvalue
 #' @usage Metabo_data_analyzer(datapath, pathresult = NULL, author = "LNA", use_IPO = FALSE, ret_corvar=FALSE, intvalpar="into", center=NULL, normalization=TRUE, NomRapport = NULL, grouping_mode, no_conditioning_QC = "ON", list_conQC= "NULL", RT_max)
 #' @author Luca Narduzzi "nardluca@gmail.com"
 #' @return peaky
@@ -24,11 +25,15 @@
 #' @examples
 #' peaky <- Metabo_data_analyzer(datapath = datapathy, grouping_mode = "area_corr", RT_max = 17)
 #'
-Metabo_data_analyzer <- function(datapath, pathresult = NULL, author = "LNA", use_IPO = FALSE, ret_corvar=FALSE,
-                                 intvalpar="into", center=NULL, normalization=TRUE, NomRapport = NULL, grouping_mode,
-                                 no_conditioning_QC = "ON", list_conQC= "NULL", RT_max) {
-  require(stringr)
-  require(xcms)
+Metabo_data_analyzer <- function(datapath = NULL, pathresult = NULL, author = "LNA", use_IPO = FALSE, ret_corvar=FALSE,
+                                 intvalpar="into", center=NULL, normalization=TRUE, NomRapport = NULL, grouping_mode = "area_corr",
+                                 no_conditioning_QC = "ON", list_conQC= "NULL", RT_max = NULL) {
+  if(is.null(datapath)) {
+  pathFILE = tcltk::tclvalue(tkchooseDirectory(initialdir = getwd(),
+                                        title = "Please, select your RAW data directory"))
+  } else {
+    datapath = datapath
+  }
   if (stringr::str_detect(tolower(datapath), "positive") == T) {
     polarity = "positive"
   }
