@@ -1,5 +1,5 @@
-#' Metabo_data_analyzer
-#'
+#' @title Metabo_data_analyzer
+#' @description The function transforms you raw mzML data files in a deconvoluted peaklist eliminating also the the redundant informations
 #' @param datapath the path source where is the data to analyze
 #' @param pathresult the path where to store the analyzed data
 #' @param author the name of project author. Default to Luca
@@ -16,9 +16,10 @@
 #' @import xcms
 #' @import CAMERA
 #' @import stringr
-#' @author "Luca Narduzzi"
+#' @usage Metabo_data_analyzer(datapath, pathresult = NULL, author = "LNA", use_IPO = FALSE, ret_corvar=FALSE, intvalpar="into", center=NULL, normalization=TRUE, NomRapport = NULL, grouping_mode, no_conditioning_QC = "ON", list_conQC= "NULL", RT_max)
+#' @author Luca Narduzzi "nardluca@gmail.com"
 #' @return peaky
-#' @export Metabo_data_analyzer
+#' @export "Metabo_data_analyzer"
 #'
 #' @examples
 #' peaky <- Metabo_data_analyzer(datapath = datapathy, grouping_mode = "area_corr", RT_max = 17)
