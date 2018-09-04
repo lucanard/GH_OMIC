@@ -20,7 +20,7 @@ xcms_object_creator <- function(datapath, use.IPO, retcorvar, intvalpar, center,
    cvth=0.45
  }
 cwp <- CentWaveParam(ppm=ppm, prefilter=prefilter, snthresh=snthresh, peakwidth=peakwidth, mzdiff=mzdiff, integrate=1, noise=noise)
-raw_data <- xcms::readMSData(cdffiles, mode = "onDisk", msLevel=1)
+raw_data <- MSnbase::readMSData(cdffiles, mode = "onDisk", msLevel=1)
 xset <- xcms::findChromPeaks(raw_data, param = cwp, return.type="xcmsSet", BPPARAM = SnowParam(detectCores()-1))
 xset@polarity <- polarity
 
