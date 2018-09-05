@@ -40,7 +40,8 @@ Metabo_data_analyzer <- function(datapath = NULL, pathresult = NULL, author = "L
   }
   if (stringr::str_detect(tolower(datapath), "negative") == T) {
     polarity = "negative"
-  }  else {
+  }
+  if (exists("polarity") == FALSE) {
     polarity <- readline("What is the polarity of the experiment?
                          ")
   }
