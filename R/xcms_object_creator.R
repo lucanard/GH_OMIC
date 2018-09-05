@@ -1,4 +1,4 @@
-xcms_object_creator <- function(datapath, use.IPO, retcorvar, intvalpar, center, NomRapport) {
+xcms_object_creator <- function(datapath, use.IPO, retcorvar, intvalpar, centerQC, NomRapport) {
 
   if (use.IPO == TRUE) {
    require(IPO)
@@ -24,7 +24,7 @@ raw_data <- MSnbase::readMSData(cdffiles, mode = "onDisk", msLevel=1)
 xset <- xcms::findChromPeaks(raw_data, param = cwp, return.type="xcmsSet", BPPARAM = SnowParam(detectCores()-1))
 xset@polarity <- polarity
 
-if (retcorvar==TRUE){
+if (retcorvar == TRUE){
   xsg1<- xcms::group(xset, method="density", bw=30, mzwid=mzwid, minfrac=minfrac, minsamp=minsamp, max=30)
   xsg1ret<- xcms::retcor(xsg1, plottype="deviation")
   xsg1retg2<- xcms::group(xsg1ret, method="density", bw=15, mzwid=mzwid, minfrac=minfrac, minsamp=minsamp, max=30)
@@ -32,7 +32,7 @@ if (retcorvar==TRUE){
   xset3<- xcms::group(xsg1retg2ret, method="density", bw=5, mzwid=mzwid, minfrac=minfrac, minsamp=minsamp, max=30)
   dev.copy2pdf(file=paste("RetCorrLoess_",NomRapport, format(Sys.time(), format = "%Y%m%d_%Hh%M"),".pdf", sep=""))
 }else{
-  if (is.null(center)){
+  if (is.null(centerQC)){
     xset2 <- xcms::retcor(xset, method="obiwarp", plottype = c("deviation"), profStep=1)
     object= xset2
     peakmat <- xcms::peaks(object)
@@ -47,7 +47,7 @@ if (retcorvar==TRUE){
     dev.off()
     rm(object)
     }else{
-    xset2 <- xcms::retcor(xset, method="obiwarp", plottype = c("deviation"), profStep=1, center=center)
+    xset2 <- xcms::retcor(xset, method="obiwarp", plottype = c("deviation"), profStep=1, center=centerQC)
     object= xset2
     peakmat <- xcms::peaks(object)
     samples <- xcms::sampnames(object)
