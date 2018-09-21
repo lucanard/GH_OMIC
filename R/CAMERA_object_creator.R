@@ -1,4 +1,4 @@
-CAMERA_object_creator <- function(xset4, grouping_mode = c("EIC_corr", "area_corr"), NomRapport) {
+CAMERA_object_creator <- function(xset4, grouping_mode = c("EIC_corr", "area_corr"), NomRapport, polarity) {
 
 no_cores <- detectCores() - 1
 ppmcamera=5

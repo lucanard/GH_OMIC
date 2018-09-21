@@ -13,12 +13,13 @@
 #' @param no_conditioning_QC should be conditioning QC erased from the normalization process? Default set to yes
 #' @param list_conQC list of conditioning QC. If null, the algorithm will try to determine what are the conditioning QCs
 #' @param RT_max What is the limit of RT to consider a peak included in the peaklist?
+#' @param cleaning Should be redudant variables eliminated
 #' @import xcms
 #' @import CAMERA
 #' @import stringr
 #' @importFrom tcltk tclvalue
 #' @importFrom MSnbase readMSData
-#' @usage Metabo_data_analyzer(datapath, pathresult = NULL, author = "LNA", use_IPO = FALSE, ret_corvar=FALSE, intvalpar="into", center=NULL, normalization=TRUE, NomRapport = NULL, grouping_mode, no_conditioning_QC = "ON", list_conQC= "NULL", RT_max)
+#' @usage Metabo_data_analyzer(datapath, pathresult = NULL, author = "LNA", use_IPO = FALSE, ret_corvar=FALSE, intvalpar="into", center=NULL, normalization=TRUE, NomRapport = NULL, grouping_mode, cleaning = T, no_conditioning_QC = "ON", list_conQC= "NULL", RT_max)
 #' @author Luca Narduzzi "nardluca@gmail.com"
 #' @return peaky
 #' @export "Metabo_data_analyzer"
@@ -27,8 +28,9 @@
 #' peaky <- Metabo_data_analyzer(datapath = datapathy, grouping_mode = "area_corr", RT_max = 17)
 #'
 Metabo_data_analyzer <- function(datapath = NULL, pathresult = NULL, author = "LNA", use_IPO = FALSE, ret_corvar=FALSE,
-                                 intvalpar="into", centerQC = NULL, normalization=TRUE, NomRapport = NULL, grouping_mode = "area_corr",
-                                 no_conditioning_QC = "ON", list_conQC= "NULL", RT_max = NULL) {
+                                 intvalpar="into", centerQC = NULL, normalization=TRUE, NomRapport = NULL,
+                                 grouping_mode = "area_corr", cleaning = TRUE, no_conditioning_QC = "ON",
+                                 list_conQC= "NULL", RT_max = NULL) {
   if(is.null(datapath)) {
   datapath = tcltk::tclvalue(tcltk::tkchooseDirectory(initialdir = getwd(),
                                         title = "Please, select your RAW data directory"))
@@ -70,8 +72,12 @@ Metabo_data_analyzer <- function(datapath = NULL, pathresult = NULL, author = "L
 xset4 <- xcms_object_creator(datapath = datapath, use.IPO = use_IPO, retcorvar = ret_corvar, intvalpar = intvalpar,
                              centerQC = centerQC, NomRapport = NomRapport)
 
-peaklist <- CAMERA_object_creator(xset4, grouping_mode = grouping_mode, NomRapport = NomRapport)
+peaklist <- CAMERA_object_creator(xset4, grouping_mode = grouping_mode, NomRapport = NomRapport, polarity = polarity)
+if (cleaning == T) {
 peaky <- peaklist_cleaning(peaklist, blanks, QCs, no_conditioning_QC = no_conditioning_QC,
                            list_conQC = list_conQC, RT_max)
+} else {
+  peaky = peaklist
+  }
 return(peaky)
 }
